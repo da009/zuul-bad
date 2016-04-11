@@ -46,14 +46,14 @@ public class Game
         comedor = new Room("in the dinningroom");
         
         // initialise room exits
-        // norte, este, sur, oeste, sureste
-        hallDelHotel.setExits(null, pasillo, null, null, comedor);
-        pasillo.setExits(habitacion2, tuHabitacion, habitacion3, hallDelHotel, null);
-        habitacion2.setExits(null, null, pasillo, null, null);
-        habitacion3.setExits(pasillo, null, null, null, null);
-        tuHabitacion.setExits(null, null, wc, pasillo, null);
-        wc.setExits(tuHabitacion, null, null, null, null);
-        comedor.setExits(pasillo, null, null, null, null);
+        // norte, este, sur, oeste, sureste, noroeste
+        hallDelHotel.setExits(null, pasillo, null, null, comedor, null);
+        pasillo.setExits(habitacion2, tuHabitacion, habitacion3, hallDelHotel, null, null);
+        habitacion2.setExits(null, null, pasillo, null, null, null);
+        habitacion3.setExits(pasillo, null, null, null, null, null);
+        tuHabitacion.setExits(null, null, wc, pasillo, null, null);
+        wc.setExits(tuHabitacion, null, null, null, null, null);
+        comedor.setExits(pasillo, null, null, null, null, hallDelHotel);
 
         currentRoom = hallDelHotel;  // start game outside
     }
@@ -182,7 +182,6 @@ public class Game
     private void printLocationInfo()
     {
         System.out.println("You are " + currentRoom.getDescription());
-        System.out.print("Exits: ");
         System.out.print(currentRoom.getExitString());
         System.out.println();
     }
