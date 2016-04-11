@@ -46,14 +46,27 @@ public class Game
         comedor = new Room("in the dinningroom");
         
         // initialise room exits
-        // norte, este, sur, oeste, sureste, noroeste
-        hallDelHotel.setExits(null, pasillo, null, null, comedor, null);
-        pasillo.setExits(habitacion2, tuHabitacion, habitacion3, hallDelHotel, null, null);
-        habitacion2.setExits(null, null, pasillo, null, null, null);
-        habitacion3.setExits(pasillo, null, null, null, null, null);
-        tuHabitacion.setExits(null, null, wc, pasillo, null, null);
-        wc.setExits(tuHabitacion, null, null, null, null, null);
-        comedor.setExits(pasillo, null, null, null, null, hallDelHotel);
+        // norte,   este,   sur,    oeste,  sureste,    noroeste
+        // hallDelHotel.setExits(null, pasillo, null, null, comedor, null);
+        hallDelHotel.setExits("east", pasillo);
+        hallDelHotel.setExits("southEast", comedor);
+        //pasillo.setExits(habitacion2, tuHabitacion, habitacion3, hallDelHotel, null, null);
+        pasillo.setExits("north", habitacion2);
+        pasillo.setExits("east", tuHabitacion);
+        pasillo.setExits("south", habitacion3);
+        pasillo.setExits("west", hallDelHotel);
+        // habitacion2.setExits(null, null, pasillo, null, null, null);
+        habitacion2.setExits("south", pasillo);
+        // habitacion3.setExits(pasillo, null, null, null, null, null);
+        habitacion3.setExits("north", pasillo);
+        // tuHabitacion.setExits(null, null, wc, pasillo, null, null);
+        tuHabitacion.setExits("south", wc);
+        tuHabitacion.setExits("west", pasillo);
+        // wc.setExits(tuHabitacion, null, null, null, null, null);
+        wc.setExits("north", tuHabitacion);
+        // comedor.setExits(pasillo, null, null, null, null, hallDelHotel);
+        comedor.setExits("north", pasillo);
+        comedor.setExits("northWest", hallDelHotel);
 
         currentRoom = hallDelHotel;  // start game outside
     }
@@ -72,7 +85,7 @@ public class Game
         while (! finished) {
             Command command = parser.getCommand();
             finished = processCommand(command);
-            if (currentRoom.getDescription().equals("your bathroom"))
+            if (currentRoom.getDescription().equals("in your bathroom"))
             {
                 finished = true;
             }
