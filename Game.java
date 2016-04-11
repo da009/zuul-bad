@@ -37,12 +37,12 @@ public class Game
         Room hallDelHotel, pasillo, habitacion2, habitacion3, tuHabitacion, wc;
       
         // create the rooms
-        hallDelHotel = new Room("en el hall del hotel");
-        pasillo = new Room("pasillo de las habitaciones");
-        habitacion2 = new Room("esta es la número 2, no es tu habitación");
-        habitacion3 = new Room("esta es la número 3, no es tu habitación");
-        tuHabitacion = new Room("esta es tu habitación");
-        wc = new Room("has llegado al baño");
+        hallDelHotel = new Room("in the main entrance");
+        pasillo = new Room("hall rooms");
+        habitacion2 = new Room("in the room number 3, there isn't your room");
+        habitacion3 = new Room("in the room number 3, there isn't your room");
+        tuHabitacion = new Room("in your room");
+        wc = new Room("your bathroom");
         
         // initialise room exits
         // arriba, derecha, abajo, izquierda
@@ -70,6 +70,10 @@ public class Game
         while (! finished) {
             Command command = parser.getCommand();
             finished = processCommand(command);
+            if (currentRoom.getDescription().equals("your bathroom"))
+            {
+                finished = true;
+            }
         }
         System.out.println("Thank you for playing.  Good bye.");
     }
