@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 /**
  * Class Room - a room in an adventure game.
  *
@@ -15,11 +17,11 @@
 public class Room 
 {
     public String description;
-    public Room northExit;
-    public Room southExit;
-    public Room eastExit;
-    public Room westExit;
-    public Room southEastExit;
+    private Room northExit;
+    private Room southExit;
+    private Room eastExit;
+    private Room westExit;
+    private Room southEastExit;
 
     /**
      * Create a room described "description". Initially, it has
@@ -60,5 +62,62 @@ public class Room
     public String getDescription()
     {
         return description;
+    }
+
+    /**
+     * @return The exits of the room.
+     */
+    public Room getExit(String salida)
+    {
+        Room salidas = null;
+
+        if (salida.equals("north"))
+        {
+            salidas = northExit;
+        }
+        if (salida.equals("east"))
+        {
+            salidas = eastExit;
+        }
+        if (salida.equals("south"))
+        {
+            salidas = southExit;
+        }
+        if (salida.equals("west"))
+        {
+            salidas = westExit;
+        }
+        if (salida.equals("southEast"))
+        {
+            salidas = southEastExit;
+        }
+        return salidas;
+    }
+
+    /**
+     * Return a description of the room's exits.
+     * For example: "Exits: north east west"
+     *
+     * @ return A description of the available exits.
+     */
+    public String getExitString()
+    {
+        String listaSalidas = "Exits: ";
+        if(northExit != null) {
+            listaSalidas += " north ";
+        }
+        if(eastExit != null) {
+            listaSalidas += "east ";
+        }
+        if(southExit != null) {
+            listaSalidas += "south ";
+        }
+        if(westExit != null) {
+            listaSalidas += "west ";
+        }
+        if(southEastExit != null) {
+            listaSalidas += "southEast ";
+        }
+        return listaSalidas;
     }
 }
