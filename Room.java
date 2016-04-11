@@ -94,4 +94,17 @@ public class Room
             listaSalidas += "northWest ";
         return listaSalidas;
     }
+
+    /**
+     * Return a long description of this room, of the form:
+     *     You are in the 'name of room'
+     *     Exits: north west southwest
+     * @return A description of the room, including exits.
+     */
+    public String getLongDescription()
+    {
+        String descripcionLarga = "You are in the ";
+        descripcionLarga += getDescription() + ".\n" + getExitString();
+        return descripcionLarga;
+    }
 }

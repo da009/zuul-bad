@@ -37,13 +37,13 @@ public class Game
         Room hallDelHotel, pasillo, habitacion2, habitacion3, tuHabitacion, wc, comedor;
         
         // create the rooms
-        hallDelHotel = new Room("in the main entrance");
+        hallDelHotel = new Room("main entrance");
         pasillo = new Room("hall rooms");
-        habitacion2 = new Room("in the room number 3, there isn't your room");
-        habitacion3 = new Room("in the room number 3, there isn't your room");
-        tuHabitacion = new Room("in your room");
-        wc = new Room("in your bathroom");
-        comedor = new Room("in the dinningroom");
+        habitacion2 = new Room("room number 3, there isn't your room");
+        habitacion3 = new Room("room number 3, there isn't your room");
+        tuHabitacion = new Room("your room");
+        wc = new Room("your bathroom");
+        comedor = new Room("dinningroom");
         
         // initialise room exits
         // norte,   este,   sur,    oeste,  sureste,    noroeste
@@ -194,8 +194,7 @@ public class Game
     
     private void printLocationInfo()
     {
-        System.out.println("You are " + currentRoom.getDescription());
-        System.out.print(currentRoom.getExitString());
+        System.out.println(currentRoom.getLongDescription());
         System.out.println();
     }
 }
