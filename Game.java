@@ -200,8 +200,11 @@ public class Game
         System.out.println();
     }
     
+    /**
+     * Print all valids commands
+     */
     public void getValidsCommands()
     {
-        parser.getCommands().showAll();
+        parser.getCommands();
     }
 }
