@@ -130,9 +130,8 @@ public class Game
         else if (commandWord.equals("quit")) {
             wantToQuit = quit(command);
         }
-        else if (commandWord.equals("look")) {
+        else if (commandWord.equals("look"))
             System.out.println(currentRoom.getLongDescription());
-        }
 
         return wantToQuit;
     }
@@ -144,7 +143,7 @@ public class Game
      * Here we print some stupid, cryptic message and a list of the 
      * command words.
      */
-    private void printHelp() 
+    private void printHelp()
     {
         System.out.println("You are lost. You are alone. You wander");
         System.out.println("around at the university.");
@@ -199,5 +198,10 @@ public class Game
     {
         System.out.println(currentRoom.getLongDescription());
         System.out.println();
+    }
+    
+    public void getValidsCommands()
+    {
+        parser.getCommands().showAll();
     }
 }
