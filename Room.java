@@ -1,5 +1,6 @@
 import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * Class Room - a room in an adventure game.
@@ -31,7 +32,7 @@ public class Room
     public Room(String description) 
     {
         this.description = description;
-        salidas = new HashMap<>();
+        salidas = new HashMap<String, Room>();
         objetos = new ArrayList<Item>();
     }
 
@@ -58,21 +59,7 @@ public class Room
      */
     public Room getExit(String salida)
     {
-        Room listaSalidas = null;
-
-        if (salida.equals("north"))
-            listaSalidas = salidas.get("north");
-        if (salida.equals("east"))
-            listaSalidas = salidas.get("east");
-        if (salida.equals("south"))
-            listaSalidas = salidas.get("south");
-        if (salida.equals("west"))
-            listaSalidas = salidas.get("west");
-        if (salida.equals("southEast"))
-            listaSalidas = salidas.get("southEast");
-        if (salida.equals("northWest"))
-            listaSalidas = salidas.get("northWest");
-        return listaSalidas;
+        return salidas.get(salida);
     }
 
     /**
@@ -84,18 +71,11 @@ public class Room
     public String getExitString()
     {
         String listaSalidas = "Exits: ";
-        if(salidas.get("north") != null)
-            listaSalidas += " north ";
-        if(salidas.get("east") != null)
-            listaSalidas += "east ";
-        if(salidas.get("south") != null)
-            listaSalidas += "south ";
-        if(salidas.get("west") != null)
-            listaSalidas += "west ";
-        if(salidas.get("southEast") != null)
-            listaSalidas += "southEast ";
-        if(salidas.get("northWest") != null)
-            listaSalidas += "northWest ";
+        Iterator it = this.salidas.keySet().iterator();
+        while (it.hasNext())
+        {
+            listaSalidas += it.next() + " ";
+        }
         return listaSalidas;
     }
 
