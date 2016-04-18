@@ -37,15 +37,13 @@ public class Game
         Room hallDelHotel, pasillo, habitacion2, habitacion3, tuHabitacion, wc, comedor;
         
         // create the rooms
-        hallDelHotel = new Room("main entrance", "There's a backpack on the table", 3);
-        pasillo = new Room("hall rooms", "It's just a plant", 6);
-        habitacion2 = new Room("room number 3, there isn't your room", "You can see a water bottle", 2);
-        habitacion3 = new Room("room number 3, there isn't your room", "Someone forgot his bag, it looks " + 
-            "like incredible heavy", 25);
-        tuHabitacion = new Room("your room", "This is your room, you can see the toilet paper, it's your " +
-            "salvation!, run to the toilet!!!", 1);
-        wc = new Room("your bathroom", "you only see a razor", 1);
-        comedor = new Room("dinningroom", "there only is a cooking pot, but it smells icredible good", 5);
+        hallDelHotel = new Room("main entrance");
+        pasillo = new Room("hall rooms");
+        habitacion2 = new Room("room number 3, there isn't your room");
+        habitacion3 = new Room("room number 3, there isn't your room");
+        tuHabitacion = new Room("your room");
+        wc = new Room("your bathroom");
+        comedor = new Room("dinningroom");
         
         // initialise room exits
         // norte,   este,   sur,    oeste,  sureste,    noroeste
