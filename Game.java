@@ -21,6 +21,7 @@ public class Game
 {
     private Parser parser;
     private Room currentRoom;
+    private Stack<Room> ant;
     private Room antHab;
 
     /**
@@ -30,7 +31,7 @@ public class Game
     {
         createRooms();
         parser = new Parser();
-        antHab = null;
+        ant = new Stack<>();
     }
 
     /**
@@ -139,10 +140,10 @@ public class Game
         else if (commandWord.equals("eat"))
             System.out.println("You have eaten now and you are not hungry any more");
         else if (commandWord.equals("back")) {
-            if (antHab != null)
+            if (!ant.empty())
             {
-                currentRoom = antHab;
-                antHab = null;
+                currentRoom = ant.pop();
+                printLocationInfo();
             }
             else
             {
@@ -189,7 +190,7 @@ public class Game
             System.out.println("There is no door!");
         }
         else {
-            antHab = currentRoom;
+            ant.push(currentRoom);
             currentRoom = nextRoom;
             printLocationInfo();
         }
