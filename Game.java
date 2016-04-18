@@ -19,6 +19,7 @@ public class Game
 {
     private Parser parser;
     private Room currentRoom;
+    private String ultimaDireccion;
         
     /**
      * Create the game and initialise its internal map.
@@ -131,7 +132,7 @@ public class Game
             wantToQuit = quit(command);
         }
         else if (commandWord.equals("look"))
-            System.out.println(currentRoom.getLongDescription() + currentRoom.getItemDescription());
+            System.out.println(currentRoom.getLongDescription());
         else if (commandWord.equals("eat"))
             System.out.println("You have eaten now and you are not hungry any more");
 
@@ -167,7 +168,6 @@ public class Game
         }
 
         String direction = command.getSecondWord();
-
         // Try to leave current room.
         Room nextRoom = currentRoom.getExit(direction);
         
@@ -198,7 +198,7 @@ public class Game
     
     private void printLocationInfo()
     {
-        System.out.println(currentRoom.getLongDescription() + currentRoom.getItemDescription());
+        System.out.println(currentRoom.getLongDescription());
         System.out.println();
     }
     

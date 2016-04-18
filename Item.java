@@ -17,7 +17,7 @@ public class Item
     public Item(String descripcion, int peso)
     {
         descripcionObj = descripcion;
-        pesoObj = peso;  
+        pesoObj = peso;
     }
     
     /**

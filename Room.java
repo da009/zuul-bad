@@ -107,19 +107,15 @@ public class Room
      */
     public String getLongDescription()
     {
+        String objj = "";
+        for (Item obj : objetos)
+        {
+            objj += obj.getItemDescription();
+        }
         String descripcionLarga = "You are in the ";
-        descripcionLarga += getDescription() + ".\n" + getExitString();
-        return descripcionLarga;
-    }
-    
-    /**
-     * Print the item description
-     */
-    public String getItemDescription()
-    {
-        String objDescription = "\n";
-        objDescription += obj.getDespription() + "\n" + "Pesa: " + obj.getPeso() + "kg";
-        return objDescription;
+        descripcionLarga += getDescription() + ".\n" + "Hay los siguientes objetos: " + objj +
+            "\n" + getExitString();
+        return descripcionLarga;     
     }
     
     /**
