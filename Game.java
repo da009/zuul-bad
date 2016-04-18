@@ -1,3 +1,5 @@
+import java.util.Stack;
+
 /**
  *  This class is the main class of the "World of Zuul" application. 
  *  "World of Zuul" is a very simple, text based adventure game.  Users 
@@ -19,8 +21,8 @@ public class Game
 {
     private Parser parser;
     private Room currentRoom;
-    private String ultimaDireccion;
-        
+    private Room antHab;
+
     /**
      * Create the game and initialise its internal map.
      */
@@ -28,6 +30,7 @@ public class Game
     {
         createRooms();
         parser = new Parser();
+        antHab = null;
     }
 
     /**
@@ -36,7 +39,7 @@ public class Game
     private void createRooms()
     {
         Room hallDelHotel, pasillo, habitacion2, habitacion3, tuHabitacion, wc, comedor;
-        
+
         // create the rooms
         hallDelHotel = new Room("main entrance");
         pasillo = new Room("hall rooms");
@@ -45,7 +48,7 @@ public class Game
         tuHabitacion = new Room("your room");
         wc = new Room("your bathroom");
         comedor = new Room("dinningroom");
-        
+
         // initialise room exits
         // norte,   este,   sur,    oeste,  sureste,    noroeste
         // hallDelHotel.setExits(null, pasillo, null, null, comedor, null);
@@ -81,7 +84,7 @@ public class Game
 
         // Enter the main command loop.  Here we repeatedly read commands and
         // execute them until the game is over.
-                
+
         boolean finished = false;
         while (! finished) {
             Command command = parser.getCommand();
@@ -135,6 +138,17 @@ public class Game
             System.out.println(currentRoom.getLongDescription());
         else if (commandWord.equals("eat"))
             System.out.println("You have eaten now and you are not hungry any more");
+        else if (commandWord.equals("back")) {
+            if (antHab != null)
+            {
+                currentRoom = antHab;
+                antHab = null;
+            }
+            else
+            {
+                System.out.println("Is not posible return to the location before this");
+            }
+        }
 
         return wantToQuit;
     }
@@ -152,7 +166,7 @@ public class Game
         System.out.println("around at the university.");
         System.out.println();
         System.out.println("Your command words are:");
-        System.out.println("   go quit help");
+        getValidsCommands();
     }
 
     /** 
@@ -170,11 +184,12 @@ public class Game
         String direction = command.getSecondWord();
         // Try to leave current room.
         Room nextRoom = currentRoom.getExit(direction);
-        
+
         if (nextRoom == null) {
             System.out.println("There is no door!");
         }
         else {
+            antHab = currentRoom;
             currentRoom = nextRoom;
             printLocationInfo();
         }
@@ -195,13 +210,13 @@ public class Game
             return true;  // signal that we want to quit
         }
     }
-    
+
     private void printLocationInfo()
     {
         System.out.println(currentRoom.getLongDescription());
         System.out.println();
     }
-    
+
     /**
      * Print all valids commands
      */

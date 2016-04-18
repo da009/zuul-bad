@@ -119,6 +119,14 @@ public class Room
     }
     
     /**
+     * Print the item description
+     */
+    public String getItemDescription()
+    {
+        return obj.getItemDescription();
+    }
+    
+    /**
      * Añade un item
      */
     public void addItem(String descripcionObj, int pesoObj)
