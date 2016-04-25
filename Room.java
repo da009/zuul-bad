@@ -107,11 +107,40 @@ public class Room
     }
     
     /**
-     * Añade un item
+     * Add an Item
      */
     public void addItem(String descripcionObj, int pesoObj)
     {
         obj = new Item(descripcionObj, pesoObj);
         objetos.add(obj);
+    }
+    
+    /**
+     * Remove an Item
+     */
+    public void removeItem(String descriptionObj)
+    {
+        Item object = searchItem(descriptionObj);
+        objetos.remove(object);
+    }
+    
+    /**
+     * Search the objet in the ArrayList
+     */
+    public Item searchItem(String descripcionObj)
+    {
+        int cont = 0;
+        boolean found = false;
+        while (cont <= objetos.size() && !found)
+        {
+            if (objetos.get(cont).getDespription().equals(descripcionObj))
+                found = true;
+            else
+            {
+                System.out.println("The Item not exist");
+            }
+            cont ++;
+        }
+        return objetos.get(cont-1);
     }
 }

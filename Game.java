@@ -23,15 +23,17 @@ public class Game
     private Room currentRoom;
     private Stack<Room> ant;
     private Room antHab;
+    private Player player;
 
     /**
      * Create the game and initialise its internal map.
      */
-    public Game() 
+    public Game(int maxWeight) 
     {
         createRooms();
         parser = new Parser();
         ant = new Stack<>();
+        player = new Player(maxWeight);
     }
 
     /**
@@ -43,12 +45,25 @@ public class Game
 
         // create the rooms
         hallDelHotel = new Room("main entrance");
+        hallDelHotel.addItem("objPrueba1", 1);
+
         pasillo = new Room("hall rooms");
+        pasillo.addItem("objPrueba2", 3);
+
         habitacion2 = new Room("room number 3, there isn't your room");
+        habitacion2.addItem("objPrueba3", 5);
+
         habitacion3 = new Room("room number 3, there isn't your room");
+        habitacion3.addItem("objPrueba4", 10);
+
         tuHabitacion = new Room("your room");
+        tuHabitacion.addItem("objPrueba5", 7);
+
         wc = new Room("your bathroom");
+        wc.addItem("objPrueba6", 1);
+
         comedor = new Room("dinningroom");
+        comedor.addItem("objPrueba7", 30);
 
         // initialise room exits
         // norte,   este,   sur,    oeste,  sureste,    noroeste
@@ -139,6 +154,12 @@ public class Game
             System.out.println(currentRoom.getLongDescription());
         else if (commandWord.equals("eat"))
             System.out.println("You have eaten now and you are not hungry any more");
+        else if (commandWord.equals("take"))
+            addInventory(command);
+        else if (commandWord.equals("drop"))
+            removeInventory(command);
+            else if (commandWord.equals("items"))
+            player.showItems();
         else if (commandWord.equals("back")) {
             if (!ant.empty())
             {
@@ -146,15 +167,44 @@ public class Game
                 printLocationInfo();
             }
             else
-            {
                 System.out.println("Is not posible return to the location before this");
-            }
         }
-
         return wantToQuit;
     }
 
     // implementations of user commands:
+
+    private void addInventory(Command command)
+    {
+        int pesoObj = currentRoom.searchItem(command.getSecondWord()).getPeso();
+        String descriptionObj = currentRoom.searchItem(command.getSecondWord()).getDespription();
+        if(!command.hasSecondWord()) {
+            System.out.println("What do you want to catch?");
+            return;
+        }
+        else if(player.getMaxWeight() >= pesoObj)
+        {
+            player.catchItem(currentRoom.searchItem(command.getSecondWord()));
+            currentRoom.removeItem(descriptionObj);
+        }
+        else if (player.getMaxWeight() < pesoObj)
+            System.out.println("Your body feels too heavy as take this objet");
+    }
+
+    private void removeInventory(Command command)
+    {
+        int pesoObj = player.searchItemRetItem(command.getSecondWord()).getPeso();
+        String descriptionObj = player.searchItemRetItem(command.getSecondWord()).getDespription();
+        if(!command.hasSecondWord()) {
+            System.out.println("What do you want to catch?");
+            return;
+        }
+        else if(player.searchItemRetItem(descriptionObj).getDespription().equals(descriptionObj))
+        {
+            currentRoom.addItem(descriptionObj, pesoObj);
+            player.dropItem(player.searchItemRetItem(command.getSecondWord()));
+        }
+    }
 
     /**
      * Print out some help information.
