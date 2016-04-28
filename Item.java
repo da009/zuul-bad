@@ -10,14 +10,16 @@ public class Item
     // instance variables - replace the example below with your own
     private String descripcionObj;
     private int pesoObj;
+    private boolean posible;
 
     /**
      * Constructor for objects of class Item
      */
-    public Item(String descripcion, int peso)
+    public Item(String descripcion, int peso, boolean posible)
     {
         descripcionObj = descripcion;
         pesoObj = peso;
+        this.posible = posible;
     }
     
     /**
@@ -38,5 +40,10 @@ public class Item
     public int getPeso()
     {
         return pesoObj;
+    }
+    
+    public boolean itsPosible()
+    {
+        return posible;
     }
 }
