@@ -1,4 +1,3 @@
-import java.util.Stack;
 
 /**
  *  This class is the main class of the "World of Zuul" application. 
@@ -20,8 +19,6 @@ import java.util.Stack;
 public class Game 
 {
     private Parser parser;
-    private Room currentRoom;
-    private Stack<Room> ant;
     private Room antHab;
     private Player player;
 
@@ -30,16 +27,14 @@ public class Game
      */
     public Game(int maxWeight) 
     {
-        createRooms();
+        createRooms(maxWeight);
         parser = new Parser();
-        ant = new Stack<>();
-        player = new Player(maxWeight);
     }
 
     /**
      * Create all the rooms and link their exits together.
      */
-    private void createRooms()
+    private void createRooms(int maxWeight)
     {
         Room hallDelHotel, pasillo, habitacion2, habitacion3, tuHabitacion, wc, comedor;
 
@@ -87,8 +82,8 @@ public class Game
         // comedor.setExits(pasillo, null, null, null, null, hallDelHotel);
         comedor.setExits("north", pasillo);
         comedor.setExits("northWest", hallDelHotel);
-
-        currentRoom = hallDelHotel;  // start game outside
+        
+        player = new Player(maxWeight, hallDelHotel);
     }
 
     /**
@@ -105,7 +100,7 @@ public class Game
         while (! finished) {
             Command command = parser.getCommand();
             finished = processCommand(command);
-            if (currentRoom.getDescription().equals("in your bathroom"))
+            if (player.getCurrentLocation().getDescription().equals("in your bathroom"))
             {
                 finished = true;
             }
@@ -151,7 +146,7 @@ public class Game
             wantToQuit = quit(command);
         }
         else if (commandWord.equals("look"))
-            System.out.println(currentRoom.getLongDescription());
+            System.out.println(player.getCurrentLocation().getLongDescription());
         else if (commandWord.equals("eat"))
             System.out.println("You have eaten now and you are not hungry any more");
         else if (commandWord.equals("take"))
@@ -160,11 +155,12 @@ public class Game
             removeInventory(command);
             else if (commandWord.equals("items"))
             player.showItems();
-        else if (commandWord.equals("back")) {
-            if (!ant.empty())
+        else if (commandWord.equals("back"))
+        {
+            if(!player.isEmpty())
             {
-                currentRoom = ant.pop();
-                printLocationInfo();
+                player.move(player.getLastRoom());
+                System.out.println(player.getCurrentLocation().getLongDescription());
             }
             else
                 System.out.println("Is not posible return to the location before this");
@@ -176,19 +172,19 @@ public class Game
 
     private void addInventory(Command command)
     {
-        int pesoObj = currentRoom.searchItem(command.getSecondWord()).getPeso();
-        String descriptionObj = currentRoom.searchItem(command.getSecondWord()).getDespription();
+        int pesoObj = player.getCurrentLocation().searchItem(command.getSecondWord()).getPeso();
+        String descriptionObj = player.getCurrentLocation().searchItem(command.getSecondWord()).getDespription();
         if(!command.hasSecondWord()) {
             System.out.println("What do you want to catch?");
             return;
         }
         else if(player.getMaxWeight() >= pesoObj)
         {
-            player.catchItem(currentRoom.searchItem(command.getSecondWord()));
-            currentRoom.removeItem(descriptionObj);
+            player.catchItem(player.getCurrentLocation().searchItem(command.getSecondWord()));
+            player.getCurrentLocation().removeItem(descriptionObj);
         }
         else if (player.getMaxWeight() < pesoObj)
-            System.out.println("Your body feels too heavy as take this objet");
+            System.out.println("The object its too heavy for your body");
     }
 
     private void removeInventory(Command command)
@@ -201,8 +197,36 @@ public class Game
         }
         else if(player.searchItemRetItem(descriptionObj).getDespription().equals(descriptionObj))
         {
-            currentRoom.addItem(descriptionObj, pesoObj);
+            player.getCurrentLocation().addItem(descriptionObj, pesoObj);
             player.dropItem(player.searchItemRetItem(command.getSecondWord()));
+        }
+        else if(!player.searchItemRetItem(descriptionObj).getDespription().equals(descriptionObj))
+            System.out.println("You can't drop an item which isn't in your inventori");
+    }
+    
+    /** 
+     * Try to go in one direction. If there is an exit, enter
+     * the new room, otherwise print an error message.
+     */
+    private void goRoom(Command command) 
+    {
+        if(!command.hasSecondWord()) {
+            // if there is no second word, we don't know where to go...
+            System.out.println("Go where?");
+            return;
+        }
+
+        String direction = command.getSecondWord();
+        player.addLastRoom();
+        // Try to leave current room.
+        Room nextRoom = player.getCurrentLocation().getExit(direction);
+
+        if (nextRoom == null) {
+            System.out.println("There is no door!");
+        }
+        else {
+            player.move(nextRoom);
+            System.out.println(player.getCurrentLocation().getLongDescription());
         }
     }
 
@@ -218,32 +242,6 @@ public class Game
         System.out.println();
         System.out.println("Your command words are:");
         getValidsCommands();
-    }
-
-    /** 
-     * Try to go in one direction. If there is an exit, enter
-     * the new room, otherwise print an error message.
-     */
-    private void goRoom(Command command) 
-    {
-        if(!command.hasSecondWord()) {
-            // if there is no second word, we don't know where to go...
-            System.out.println("Go where?");
-            return;
-        }
-
-        String direction = command.getSecondWord();
-        // Try to leave current room.
-        Room nextRoom = currentRoom.getExit(direction);
-
-        if (nextRoom == null) {
-            System.out.println("There is no door!");
-        }
-        else {
-            ant.push(currentRoom);
-            currentRoom = nextRoom;
-            printLocationInfo();
-        }
     }
 
     /** 
@@ -264,7 +262,7 @@ public class Game
 
     private void printLocationInfo()
     {
-        System.out.println(currentRoom.getLongDescription());
+        System.out.println(player.getCurrentLocation().getLongDescription());
         System.out.println();
     }
 

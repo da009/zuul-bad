@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Stack;
 
 /**
  * Write a description of class Player here.
@@ -10,13 +11,66 @@ public class Player
 {
     private ArrayList<Item> inventory;
     private int maxWeight;
+    private Room currentLocation;
+    private Stack<Room> ant;
+    
     /**
      * Constructor for objects of class Player
      */
-    public Player(int maxWeight)
+    public Player(int maxWeight, Room start)
     {
         inventory = new ArrayList<Item>();
         this.maxWeight = maxWeight;
+        currentLocation = start;
+        ant = new Stack<>();
+    }
+    
+    /**
+     * move the player to an other location
+     */
+    public void  move(Room room)
+    {
+        currentLocation = room;
+    }
+    
+    /**
+     * Set the player location
+     */
+    public void setLocalizacion(Room location)
+    {
+        currentLocation = location;
+    }
+    
+    /**
+     * Returns the currentLocation
+     */
+    public Room getCurrentLocation()
+    {
+        return currentLocation;
+    }
+    
+    /**
+     * Return the last location for this player
+     */
+    public Room getLastRoom()
+    {
+        return ant.pop();
+    }
+    
+    /**
+     * returns if the player have a valid location before
+     */
+    public boolean isEmpty()
+    {
+        return ant.empty();
+    }
+    
+    /**
+     * adds the previous room
+     */
+    public void addLastRoom()
+    {
+        ant.push(currentLocation);
     }
 
     /**
