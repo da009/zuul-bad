@@ -25,7 +25,7 @@ public class CommandWords
         validCommandsHM = new HashMap<>();
         String[] validCommands = {
                 "andare", "smettere", "aiuto", "guarda", "mangiare", "indietro", "prendere",
-                "far cadere", "elementi"};
+                "farCadere", "elementi"};
         for(int i = 0; i < validCommands.length; i++) {
             validCommandsHM.put(validCommands[i], options[i]);
         }

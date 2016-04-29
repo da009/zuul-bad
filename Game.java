@@ -25,7 +25,7 @@ public class Game
     /**
      * Create the game and initialise its internal map.
      */
-    public Game(int maxWeight, String idioma) 
+    public Game(int maxWeight) 
     {
         createRooms(maxWeight);
         parser = new Parser();
@@ -82,7 +82,7 @@ public class Game
         // comedor.setExits(pasillo, null, null, null, null, hallDelHotel);
         comedor.setExits("north", pasillo);
         comedor.setExits("northWest", hallDelHotel);
-        
+
         player = new Player(maxWeight, hallDelHotel);
     }
 
@@ -116,7 +116,7 @@ public class Game
         System.out.println();
         System.out.println("Welcome to the World of Zuul!");
         System.out.println("World of Zuul is a new, incredibly boring adventure game.");
-        System.out.println("Type 'help' if you need help.");
+        System.out.println("Type 'aiuto' if you need help.");
         System.out.println();
         printLocationInfo();
     }
@@ -135,23 +135,41 @@ public class Game
         }
 
         Option commandWord = command.getCommandWord();
-        if (commandWord.equals(Option.help))
+        switch (commandWord){
+            case help:
             printHelp();
-        else if (commandWord.equals(Option.go))
+            break;
+
+            case go:
             goRoom(command);
-        else if (commandWord.equals(Option.quit))
+            break;
+
+            case quit:
             wantToQuit = quit(command);
-        else if (commandWord.equals(Option.look))
+            break;
+
+            case look:
             System.out.println(player.getCurrentLocation().getLongDescription());
-        else if (commandWord.equals(Option.eat))
+            break;
+
+            case eat:
             System.out.println("You have eaten now and you are not hungry any more");
-        else if (commandWord.equals(Option.take))
+            break;
+
+            case take:
             addInventory(command);
-        else if (commandWord.equals(Option.drop))
+            break;
+
+            case drop:
             removeInventory(command);
-            else if (commandWord.equals(Option.items))
+            break;
+
+            case items:
             player.showItems();
-        else if (commandWord.equals(Option.back)) {
+            break;
+        }
+        
+        if (commandWord.equals(Option.back)) {
             if (!player.isEmpty())
             {
                 player.move(player.getLastRoom());
@@ -205,7 +223,7 @@ public class Game
         else if(!player.searchItemRetItem(descriptionObj).getDespription().equals(descriptionObj))
             System.out.println("You can't drop an item which isn't in your inventori");
     }
-    
+
     /** 
      * Try to go in one direction. If there is an exit, enter
      * the new room, otherwise print an error message.
