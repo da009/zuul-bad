@@ -135,19 +135,15 @@ public class Game
         }
 
         Option commandWord = command.getCommandWord();
-        if (commandWord.equals(Option.help)) {
+        if (commandWord.equals(Option.help))
             printHelp();
-        }
-        else if (commandWord.equals(Option.go)) {
+        else if (commandWord.equals(Option.go))
             goRoom(command);
-        }
-        else if (commandWord.equals(Option.quit)) {
+        else if (commandWord.equals(Option.quit))
             wantToQuit = quit(command);
-        }
         else if (commandWord.equals(Option.look))
             System.out.println(player.getCurrentLocation().getLongDescription());
         else if (commandWord.equals(Option.eat))
-
             System.out.println("You have eaten now and you are not hungry any more");
         else if (commandWord.equals(Option.take))
             addInventory(command);
@@ -204,6 +200,7 @@ public class Game
         {
             player.getCurrentLocation().addItem(descriptionObj, pesoObj, true);
             player.dropItem(player.searchItemRetItem(command.getSecondWord()));
+            System.out.println("Object dropped");
         }
         else if(!player.searchItemRetItem(descriptionObj).getDespription().equals(descriptionObj))
             System.out.println("You can't drop an item which isn't in your inventori");
@@ -226,9 +223,8 @@ public class Game
         // Try to leave current room.
         Room nextRoom = player.getCurrentLocation().getExit(direction);
 
-        if (nextRoom == null) {
+        if (nextRoom == null)
             System.out.println("There is no door!");
-        }
         else {
             player.move(nextRoom);
             System.out.println(player.getCurrentLocation().getLongDescription());
@@ -260,9 +256,8 @@ public class Game
             System.out.println("Quit what?");
             return false;
         }
-        else {
+        else
             return true;  // signal that we want to quit
-        }
     }
 
     private void printLocationInfo()
