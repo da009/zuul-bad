@@ -14,7 +14,7 @@ import java.util.HashMap;
 public class CommandWords
 {
     // a constant array that holds all valid command words
-            // "go", "quit", "help", "look", "eat", "back", "take", "drop", "items"
+    // "go", "quit", "help", "look", "eat", "back", "take", "drop", "items"
     private HashMap<String, Option> validCommandsHM;
     /**
      * Constructor - initialise the command words.
@@ -24,7 +24,8 @@ public class CommandWords
         Option[] options = Option.values();
         validCommandsHM = new HashMap<>();
         String[] validCommands = {
-                "go", "quit", "help", "look", "eat", "back", "take", "drop", "items"};
+                "andare", "smettere", "aiuto", "guarda", "mangiare", "indietro", "prendere",
+                "far cadere", "elementi"};
         for(int i = 0; i < validCommands.length; i++) {
             validCommandsHM.put(validCommands[i], options[i]);
         }
@@ -56,7 +57,7 @@ public class CommandWords
         }
         System.out.print(commList);
     }
-    
+
     public Option getCommandWord(String commandWord)
     {
         Option option = validCommandsHM.get(commandWord);

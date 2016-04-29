@@ -25,10 +25,11 @@ public class Game
     /**
      * Create the game and initialise its internal map.
      */
-    public Game(int maxWeight) 
+    public Game(int maxWeight, String idioma) 
     {
         createRooms(maxWeight);
         parser = new Parser();
+        getIdioma(idioma);
     }
 
     /**
