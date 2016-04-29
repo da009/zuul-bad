@@ -29,7 +29,6 @@ public class Game
     {
         createRooms(maxWeight);
         parser = new Parser();
-        getIdioma(idioma);
     }
 
     /**
