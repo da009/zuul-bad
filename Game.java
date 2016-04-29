@@ -134,33 +134,32 @@ public class Game
     private boolean processCommand(Command command) 
     {
         boolean wantToQuit = false;
-
         if(command.isUnknown()) {
             System.out.println("I don't know what you mean...");
             return false;
         }
 
-        String commandWord = command.getCommandWord();
-        if (commandWord.equals("help")) {
+        Option commandWord = command.getCommandWord();
+        if (commandWord.equals(Option.help)) {
             printHelp();
         }
-        else if (commandWord.equals("go")) {
+        else if (commandWord.equals(Option.go)) {
             goRoom(command);
         }
-        else if (commandWord.equals("quit")) {
+        else if (commandWord.equals(Option.quit)) {
             wantToQuit = quit(command);
         }
-        else if (commandWord.equals("look"))
+        else if (commandWord.equals(Option.look))
             System.out.println(currentRoom.getLongDescription());
-        else if (commandWord.equals("eat"))
+        else if (commandWord.equals(Option.eat))
             System.out.println("You have eaten now and you are not hungry any more");
-        else if (commandWord.equals("take"))
+        else if (commandWord.equals(Option.take))
             addInventory(command);
-        else if (commandWord.equals("drop"))
+        else if (commandWord.equals(Option.drop))
             removeInventory(command);
-            else if (commandWord.equals("items"))
+            else if (commandWord.equals(Option.items))
             player.showItems();
-        else if (commandWord.equals("back")) {
+        else if (commandWord.equals(Option.back)) {
             if (!ant.empty())
             {
                 currentRoom = ant.pop();
@@ -188,9 +187,10 @@ public class Game
             {
                 player.catchItem(currentRoom.searchItem(command.getSecondWord()));
                 currentRoom.removeItem(descriptionObj);
+                System.out.println("Object taken");
             }
             else if (player.getMaxWeight() < pesoObj)
-                System.out.println("Your body feels too heavy as take this objet");
+                System.out.println("Your body feels too heavy as take this object");
         }
         else
             System.out.println("This object can not be taken");
