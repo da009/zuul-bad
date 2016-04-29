@@ -40,25 +40,25 @@ public class Game
 
         // create the rooms
         hallDelHotel = new Room("main entrance");
-        hallDelHotel.addItem("objPrueba1", 1);
+        hallDelHotel.addItem("objPrueba1", 1, true);
 
         pasillo = new Room("hall rooms");
-        pasillo.addItem("objPrueba2", 3);
+        pasillo.addItem("objPrueba2", 3, false);
 
         habitacion2 = new Room("room number 3, there isn't your room");
-        habitacion2.addItem("objPrueba3", 5);
+        habitacion2.addItem("objPrueba3", 5, true);
 
         habitacion3 = new Room("room number 3, there isn't your room");
-        habitacion3.addItem("objPrueba4", 10);
+        habitacion3.addItem("objPrueba4", 10, true);
 
         tuHabitacion = new Room("your room");
-        tuHabitacion.addItem("objPrueba5", 7);
+        tuHabitacion.addItem("objPrueba5", 7, true);
 
         wc = new Room("your bathroom");
-        wc.addItem("objPrueba6", 1);
+        wc.addItem("objPrueba6", 1, true);
 
         comedor = new Room("dinningroom");
-        comedor.addItem("objPrueba7", 30);
+        comedor.addItem("objPrueba7", 30, true);
 
         // initialise room exits
         // norte,   este,   sur,    oeste,  sureste,    noroeste
@@ -129,35 +129,34 @@ public class Game
     private boolean processCommand(Command command) 
     {
         boolean wantToQuit = false;
-
         if(command.isUnknown()) {
             System.out.println("I don't know what you mean...");
             return false;
         }
 
-        String commandWord = command.getCommandWord();
-        if (commandWord.equals("help")) {
+        Option commandWord = command.getCommandWord();
+        if (commandWord.equals(Option.help)) {
             printHelp();
         }
-        else if (commandWord.equals("go")) {
+        else if (commandWord.equals(Option.go)) {
             goRoom(command);
         }
-        else if (commandWord.equals("quit")) {
+        else if (commandWord.equals(Option.quit)) {
             wantToQuit = quit(command);
         }
-        else if (commandWord.equals("look"))
+        else if (commandWord.equals(Option.look))
             System.out.println(player.getCurrentLocation().getLongDescription());
-        else if (commandWord.equals("eat"))
+        else if (commandWord.equals(Option.eat))
+
             System.out.println("You have eaten now and you are not hungry any more");
-        else if (commandWord.equals("take"))
+        else if (commandWord.equals(Option.take))
             addInventory(command);
-        else if (commandWord.equals("drop"))
+        else if (commandWord.equals(Option.drop))
             removeInventory(command);
-            else if (commandWord.equals("items"))
+            else if (commandWord.equals(Option.items))
             player.showItems();
-        else if (commandWord.equals("back"))
-        {
-            if(!player.isEmpty())
+        else if (commandWord.equals(Option.back)) {
+            if (!player.isEmpty())
             {
                 player.move(player.getLastRoom());
                 System.out.println(player.getCurrentLocation().getLongDescription());
@@ -178,13 +177,19 @@ public class Game
             System.out.println("What do you want to catch?");
             return;
         }
-        else if(player.getMaxWeight() >= pesoObj)
+        if (player.getCurrentLocation().searchItem(command.getSecondWord()).itsPosible())
         {
-            player.catchItem(player.getCurrentLocation().searchItem(command.getSecondWord()));
-            player.getCurrentLocation().removeItem(descriptionObj);
+            if(player.getMaxWeight() >= pesoObj)
+            {
+                player.catchItem(player.getCurrentLocation().searchItem(command.getSecondWord()));
+                player.getCurrentLocation().removeItem(descriptionObj);
+                System.out.println("Object taken");
+            }
+            else if (player.getMaxWeight() < pesoObj)
+                System.out.println("Your body feels too heavy as take this object");
         }
-        else if (player.getMaxWeight() < pesoObj)
-            System.out.println("The object its too heavy for your body");
+        else
+            System.out.println("This object can not be taken");
     }
 
     private void removeInventory(Command command)
@@ -197,7 +202,7 @@ public class Game
         }
         else if(player.searchItemRetItem(descriptionObj).getDespription().equals(descriptionObj))
         {
-            player.getCurrentLocation().addItem(descriptionObj, pesoObj);
+            player.getCurrentLocation().addItem(descriptionObj, pesoObj, true);
             player.dropItem(player.searchItemRetItem(command.getSecondWord()));
         }
         else if(!player.searchItemRetItem(descriptionObj).getDespription().equals(descriptionObj))

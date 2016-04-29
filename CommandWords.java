@@ -1,3 +1,5 @@
+import java.util.HashMap;
+
 /**
  * This class is part of the "World of Zuul" application. 
  * "World of Zuul" is a very simple, text based adventure game.  
@@ -12,16 +14,20 @@
 public class CommandWords
 {
     // a constant array that holds all valid command words
-    private static final String[] validCommands = {
-            "go", "quit", "help", "look", "eat", "back", "take", "drop", "items"
-        };
-
+            // "go", "quit", "help", "look", "eat", "back", "take", "drop", "items"
+    private HashMap<String, Option> validCommandsHM;
     /**
      * Constructor - initialise the command words.
      */
     public CommandWords()
     {
-        // nothing to do at the moment...
+        Option[] options = Option.values();
+        validCommandsHM = new HashMap<>();
+        String[] validCommands = {
+                "go", "quit", "help", "look", "eat", "back", "take", "drop", "items"};
+        for(int i = 0; i < validCommands.length; i++) {
+            validCommandsHM.put(validCommands[i], options[i]);
+        }
     }
 
     /**
@@ -31,8 +37,8 @@ public class CommandWords
      */
     public boolean isCommand(String aString)
     {
-        for(int i = 0; i < validCommands.length; i++) {
-            if(validCommands[i].equals(aString))
+        for(int i = 0; i < validCommandsHM.size(); i++) {
+            if(validCommandsHM.keySet().equals(aString))
                 return true;
         }
         // if we get here, the string was not found in the commands
@@ -44,8 +50,18 @@ public class CommandWords
      */
     public void showAll()
     {
-        for(int cont = 0; cont < validCommands.length; cont++) {
-            System.out.println(validCommands[cont]);
+        String commList = "Your command words are:";
+        for(String command : validCommandsHM.keySet()) {
+            commList += "\n" + command;
         }
+        System.out.print(commList);
+    }
+    
+    public Option getCommandWord(String commandWord)
+    {
+        Option option = validCommandsHM.get(commandWord);
+        if (option == null)
+            option = Option.UNKNOWN;
+        return option;
     }
 }

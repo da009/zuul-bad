@@ -109,9 +109,9 @@ public class Room
     /**
      * Add an Item
      */
-    public void addItem(String descripcionObj, int pesoObj)
+    public void addItem(String descripcionObj, int pesoObj, boolean catcheable)
     {
-        obj = new Item(descripcionObj, pesoObj);
+        obj = new Item(descripcionObj, pesoObj, catcheable);
         objetos.add(obj);
     }
     
