@@ -131,7 +131,7 @@ public class Room
     {
         int cont = 0;
         boolean found = false;
-        while (cont <= objetos.size() && !found)
+        while (cont < objetos.size() && !found)
         {
             if (objetos.get(cont).getDespription().equals(descripcionObj))
                 found = true;

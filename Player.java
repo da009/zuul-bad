@@ -116,7 +116,7 @@ public class Player
     {
         int cont = 0;
         boolean found = false;
-        while (cont <= inventory.size() && !found)
+        while (cont < inventory.size() && !found)
         {
             if (inventory.get(cont).getDespription().equals(descripcionObj))
                 found = true;
@@ -136,7 +136,7 @@ public class Player
     {
         int cont = 0;
         boolean found = false;
-        while (cont <= inventory.size() && !found)
+        while (cont < inventory.size() && !found)
         {
             if (inventory.get(cont).getDespription().equals(descripcionObj))
                 found = true;
