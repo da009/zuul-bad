@@ -22,26 +22,32 @@ public class Game
     private Room antHab;
     private Player player;
     private String listExits;
+    private int maxWeight;
+    private Room start;
+    private Room hallDelHotel, pasillo, habitacion2, habitacion3, tuHabitacion, wc, comedor, trapdor;
 
     /**
      * Create the game and initialise its internal map.
      */
     public Game(int maxWeight) 
     {
-        createRooms(maxWeight);
+        createRooms();
+        this.maxWeight = maxWeight;
+        player = new Player(maxWeight, start);
         parser = new Parser();
     }
 
     /**
      * Create all the rooms and link their exits together.
      */
-    private void createRooms(int maxWeight)
+    private void createRooms()
     {
-        Room hallDelHotel, pasillo, habitacion2, habitacion3, tuHabitacion, wc, comedor;
+        
 
         // create the rooms
         hallDelHotel = new Room("main entrance");
         hallDelHotel.addRndItem();
+        hallDelHotel.accesibleTrue();
 
         pasillo = new Room("hall rooms");
         pasillo.addRndItem();
@@ -60,45 +66,63 @@ public class Game
 
         comedor = new Room("dinningroom");
         comedor.addRndItem();
+        
+        trapdor = new Room("trapdor");
 
         listExits = "";
         // initialise room exits
         // norte,   este,   sur,    oeste,  sureste,    noroeste
         // hallDelHotel.setExits(null, pasillo, null, null, comedor, null);
         hallDelHotel.setExits("east", pasillo);
-        listExits += "east, pasillo, ";
+        listExits += "hallDelHotel: east, pasillo, ";
         hallDelHotel.setExits("southEast", comedor);
         listExits += "southEast, comedor. \n\n";
+        hallDelHotel.setExits("up", trapdor);
         //pasillo.setExits(habitacion2, tuHabitacion, habitacion3, hallDelHotel, null, null);
         pasillo.setExits("north", habitacion2);
-        listExits += "north, habitacion2, ";
+        listExits += "pasillo: north, habitacion2, ";
         pasillo.setExits("east", tuHabitacion);
         listExits += "east, tuHabitacion, ";
         pasillo.setExits("south", habitacion3);
         listExits += "south, habitacion3, ";
         pasillo.setExits("west", hallDelHotel);
         listExits += "west, hallDelHotel. \n\n";
+        pasillo.setExits("up", trapdor);
         // habitacion2.setExits(null, null, pasillo, null, null, null);
         habitacion2.setExits("south", pasillo);
-        listExits += "south, pasillo. \n\n";
+        listExits += "habitacion2: south, pasillo. \n\n";
+        habitacion2.setExits("up", trapdor);
         // habitacion3.setExits(pasillo, null, null, null, null, null);
-        habitacion3.setExits("north", pasillo);
-        listExits += "north, pasillo. \n\n";
+        habitacion3.setExits("habitacion3: north", pasillo);
+        listExits += "habitacion3: north, pasillo. \n\n";
+        habitacion3.setExits("up", trapdor);
         // tuHabitacion.setExits(null, null, wc, pasillo, null, null);
         tuHabitacion.setExits("south", wc);
-        listExits += "south, wc, ";
+        listExits += "tuHabitacion: tuHabitacion: south, wc, ";
         tuHabitacion.setExits("west", pasillo);
         listExits += "west, pasillo. \n\n";
+        tuHabitacion.setExits("up", trapdor);
         // wc.setExits(tuHabitacion, null, null, null, null, null);
         wc.setExits("north", tuHabitacion);
-        listExits += "north, tuHabitacion. \n\n";
+        listExits += "wc: north, tuHabitacion. \n\n";
+        trapdor.accesibleTrue();
         // comedor.setExits(pasillo, null, null, null, null, hallDelHotel);
         comedor.setExits("north", pasillo);
-        listExits += "north, pasillo, ";
+        listExits += "comedor: north, pasillo, ";
         comedor.setExits("northWest", hallDelHotel);
         listExits += "northWest, hallDelHotel. \n\n";
-
-        player = new Player(maxWeight, hallDelHotel);
+        comedor.setExits("up", trapdor);
+        
+        // All
+        trapdor.setExits("hallDelHotel", hallDelHotel);
+        trapdor.setExits("pasillo", pasillo);
+        trapdor.setExits("habitacion2", habitacion2);
+        trapdor.setExits("habitacion3", habitacion3);
+        trapdor.setExits("tuHabitacion", tuHabitacion);
+        trapdor.setExits("comedor", comedor);
+        trapdor.accesibleTrue();
+        
+        start = hallDelHotel;
     }
 
     /**
@@ -115,8 +139,9 @@ public class Game
         while (! finished) {
             Command command = parser.getCommand();
             finished = processCommand(command);
-            if (player.getCurrentLocation().getDescription().equals("in your bathroom"))
+            if (player.getCurrentLocation() == wc)
             {
+                System.out.println("You feel free, you do it");
                 finished = true;
             }
         }
@@ -163,8 +188,10 @@ public class Game
             wantToQuit = quit(command);
             break;
 
+            
             case look:
             System.out.println(player.getCurrentLocation().getLongDescription());
+            System.out.println("You can see a trapdoor");
             break;
 
             case eat:
@@ -270,9 +297,23 @@ public class Game
 
         if (nextRoom == null)
             System.out.println("There is no door!");
+        else if (nextRoom.getaccesible() == false)
+            System.out.println("It looks freshly washed");
         else {
             player.move(nextRoom);
             System.out.println(player.getCurrentLocation().getLongDescription());
+            if (player.getContTurn()!= 3)
+                player.aumTurn();
+            else
+            {
+                player.resCountTurn();
+                pasillo.setRndAccesible();
+                habitacion2.setRndAccesible();
+                habitacion3.setRndAccesible();
+                tuHabitacion.setRndAccesible();
+                comedor.setRndAccesible();
+                System.out.println("It seems as if they had cleaned other rooms");
+            }
         }
     }
 

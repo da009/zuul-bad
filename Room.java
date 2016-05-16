@@ -22,6 +22,7 @@ public class Room
     private HashMap<String, Room> salidas;
     private Item obj;
     private ArrayList<Item> objetos;
+    private boolean accesible;
 
     /**
      * Create a room described "description". Initially, it has
@@ -34,6 +35,15 @@ public class Room
         this.description = description;
         salidas = new HashMap<String, Room>();
         objetos = new ArrayList<Item>();
+        accesible = genRandomBoolean();
+    }
+    
+    /**
+     * Generate a random boolean
+     */
+    public boolean genRandomBoolean()
+    {
+        return Math.random() < 0.7;
     }
 
     /**
@@ -161,5 +171,37 @@ public class Room
             cont ++;
         }
         return objetos.get(cont-1);
+    }
+    
+    /**
+     * set the room unaccesible
+     */
+    public void accesibleFalse()
+    {
+        accesible = false;
+    }
+    
+    /**
+     * set the room accesible
+     */
+    public void accesibleTrue()
+    {
+        accesible = true;
+    }
+    
+    /**
+     * Set accesible ramdomly
+     */
+    public void setRndAccesible()
+    {
+        accesible = genRandomBoolean();
+    }
+    
+    /**
+     * return if the room accesible
+     */
+    public boolean getaccesible()
+    {
+        return accesible;
     }
 }

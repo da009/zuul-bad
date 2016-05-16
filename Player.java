@@ -13,6 +13,7 @@ public class Player
     private int maxWeight;
     private Room currentLocation;
     private Stack<Room> ant;
+    private int contTurn;
     
     /**
      * Constructor for objects of class Player
@@ -23,6 +24,7 @@ public class Player
         this.maxWeight = maxWeight;
         currentLocation = start;
         ant = new Stack<>();
+        contTurn = 0;
     }
     
     /**
@@ -159,5 +161,26 @@ public class Player
         {
             System.out.println(item.getDespription() + ", " + item.getPeso());
         }
+    }
+    
+    /**
+     * add 1 to the turn count
+     */
+    public void aumTurn()
+    {
+        contTurn++;
+    }
+    
+    /**
+     * set the contTurn to 0
+     */
+    public void resCountTurn()
+    {
+        contTurn = 0;
+    }
+    
+    public int getContTurn()
+    {
+        return contTurn;
     }
 }
