@@ -21,6 +21,7 @@ public class Game
     private Parser parser;
     private Room antHab;
     private Player player;
+    private String listExits;
 
     /**
      * Create the game and initialise its internal map.
@@ -40,48 +41,62 @@ public class Game
 
         // create the rooms
         hallDelHotel = new Room("main entrance");
-        hallDelHotel.addItem("objPrueba1", 1, true);
+        hallDelHotel.addRndItem();
 
         pasillo = new Room("hall rooms");
-        pasillo.addItem("objPrueba2", 3, false);
+        pasillo.addRndItem();
 
-        habitacion2 = new Room("room number 3, there isn't your room");
-        habitacion2.addItem("objPrueba3", 5, true);
+        habitacion2 = new Room("room number 2, there isn't your room");
+        habitacion2.addMap(); // here it's the map.
 
         habitacion3 = new Room("room number 3, there isn't your room");
-        habitacion3.addItem("objPrueba4", 10, true);
+        habitacion3.addRndItem();
 
         tuHabitacion = new Room("your room");
-        tuHabitacion.addItem("objPrueba5", 7, true);
+        tuHabitacion.addRndItem();
 
         wc = new Room("your bathroom");
-        wc.addItem("objPrueba6", 1, true);
+        wc.addRndItem();
 
         comedor = new Room("dinningroom");
-        comedor.addItem("objPrueba7", 30, true);
+        comedor.addRndItem();
 
+        listExits = "";
         // initialise room exits
         // norte,   este,   sur,    oeste,  sureste,    noroeste
         // hallDelHotel.setExits(null, pasillo, null, null, comedor, null);
         hallDelHotel.setExits("east", pasillo);
+        listExits += "east, pasillo, ";
         hallDelHotel.setExits("southEast", comedor);
+        listExits += "southEast, comedor. \n\n";
         //pasillo.setExits(habitacion2, tuHabitacion, habitacion3, hallDelHotel, null, null);
         pasillo.setExits("north", habitacion2);
+        listExits += "north, habitacion2, ";
         pasillo.setExits("east", tuHabitacion);
+        listExits += "east, tuHabitacion, ";
         pasillo.setExits("south", habitacion3);
+        listExits += "south, habitacion3, ";
         pasillo.setExits("west", hallDelHotel);
+        listExits += "west, hallDelHotel. \n\n";
         // habitacion2.setExits(null, null, pasillo, null, null, null);
         habitacion2.setExits("south", pasillo);
+        listExits += "south, pasillo. \n\n";
         // habitacion3.setExits(pasillo, null, null, null, null, null);
         habitacion3.setExits("north", pasillo);
+        listExits += "north, pasillo. \n\n";
         // tuHabitacion.setExits(null, null, wc, pasillo, null, null);
         tuHabitacion.setExits("south", wc);
+        listExits += "south, wc, ";
         tuHabitacion.setExits("west", pasillo);
+        listExits += "west, pasillo. \n\n";
         // wc.setExits(tuHabitacion, null, null, null, null, null);
         wc.setExits("north", tuHabitacion);
+        listExits += "north, tuHabitacion. \n\n";
         // comedor.setExits(pasillo, null, null, null, null, hallDelHotel);
         comedor.setExits("north", pasillo);
+        listExits += "north, pasillo, ";
         comedor.setExits("northWest", hallDelHotel);
+        listExits += "northWest, hallDelHotel. \n\n";
 
         player = new Player(maxWeight, hallDelHotel);
     }
@@ -168,7 +183,7 @@ public class Game
             player.showItems();
             break;
         }
-        
+
         if (commandWord.equals(Option.back)) {
             if (!player.isEmpty())
             {
@@ -179,6 +194,14 @@ public class Game
                 System.out.println("Is not posible return to the location before this");
         }
         return wantToQuit;
+    }
+
+    /**
+     * Print the rooms with the exits
+     */
+    private void printMap()
+    {
+        System.out.println(listExits);
     }
 
     // implementations of user commands:
@@ -198,6 +221,10 @@ public class Game
                 player.catchItem(player.getCurrentLocation().searchItem(command.getSecondWord()));
                 player.getCurrentLocation().removeItem(descriptionObj);
                 System.out.println("Object taken");
+                if (descriptionObj.equals("Map"))
+                {
+                    printMap();
+                }
             }
             else if (player.getMaxWeight() < pesoObj)
                 System.out.println("Your body feels too heavy as take this object");
@@ -261,6 +288,7 @@ public class Game
         System.out.println();
         System.out.println("Your command words are:");
         getValidsCommands();
+        System.out.println();
     }
 
     /** 

@@ -115,6 +115,25 @@ public class Room
         objetos.add(obj);
     }
     
+     /**
+     * Add a random Item
+     */
+    public void addRndItem()
+    {
+        obj = new Item();
+        objetos.add(obj);
+    }
+    
+    /**
+     * Add the map
+     */
+    public void addMap()
+    {
+        obj = new Item();
+        obj.setItemToMap();
+        objetos.add(obj);
+    }
+    
     /**
      * Remove an Item
      */
