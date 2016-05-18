@@ -1,0 +1,3 @@
+1.- Si el jugador coge un objeto "map" se mostraran las estancias hay y sus salidas por pantalla.
+
+2.- Se añade una nueva entrada por la parte superior(trapdor) que conectara todas las habitaciones (sera una habitación más) que se indicara al jugador con la frase "You can see a trapdoor", permitiendo acceder con el nombre de la habitación a la que se quiere ir. Las habitaciones, salvo la habitacion a la que hay que llegar, la habitación inicial y la superior podran ser inaccesibles si estan recien lavadas, si lo esta en jugador no podrá entrar y se indicara con la frase "It looks freshly washed" cuando intente entrar las habitaciones lavadas cambiarán cada 3 turnos.
